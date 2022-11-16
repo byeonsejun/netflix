@@ -1,47 +1,44 @@
 import React from 'react';
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
+import { useSelector } from 'react-redux';
 import MovieCard from './MovieCard';
 
-const responsive = {
-  bigDesktop: {
-    breakpoint: { max: 5000, min: 3000 },
-    items: 5,
-    slidesToSlide: 5 // optional, default to 1.
-  },
-  desktop: {
-    breakpoint: { max: 3000, min: 1600 },
-    items: 4,
-    slidesToSlide: 4 // optional, default to 1.
-  },
-  smallDesktop: {
-    breakpoint: { max: 1600, min: 1240 },
-    items: 3,
-    slidesToSlide: 3 // optional, default to 1.
-  },
-  tablet: {
-    breakpoint: { max: 1240, min: 776 },
-    items: 2,
-    slidesToSlide: 2 // optional, default to 1.
-  },
-  mobile: {
-    breakpoint: { max: 776, min: 0 },
-    items: 1,
-    slidesToSlide: 1 // optional, default to 1.
-  }
-};
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from "swiper";
+import 'swiper/css';
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 const MovieSlide = ({ movies }) => {
-  // console.log(movies)
+  const { genreList } = useSelector(state=>state.movie);
   return (
     <div>
-      <Carousel responsive={responsive} className="movie_slide_inner">
-        {
-          movies.results.map((item, idx) =>
-            <MovieCard key={idx} item={item} />
-          )}
-      </Carousel>
+      <Swiper
+        modules={[Pagination, Navigation]}
+        pagination={{ clickable: true, }}
+        navigation={ true }
+        className="mySwiper"
+        spaceBetween={10}
+        slidesPerView={1}
+        slidesPerGroup={1}
+        speed={1000}
+        breakpoints={{
+          320: { slidesPerView: 1, centeredSlides: true, slidesPerGroup: 1},
+          520: { slidesPerView: 1.3, centeredSlides: false, slidesPerGroup: 1},
+          580: { slidesPerView: 1.5, slidesPerGroup: 1}, 
+          767: { slidesPerView: 2, spaceBetween: 15, slidesPerGroup: 2 },
+          1024: { slidesPerView: 2.5, spaceBetween: 20 , slidesPerGroup: 2},
+          1280: { slidesPerView: 3, slidesPerGroup: 3}, 
+          1620: { slidesPerView: 4, spaceBetween: 25 , slidesPerGroup: 4}
+        }}
+      > 
+          {
+            movies.results.map((item, idx) =>
+              <SwiperSlide key={idx} >
+                <MovieCard item={item} genreList={genreList}/> 
+              </SwiperSlide>
+            )
+          }
+      </Swiper>
     </div>
   )
 }

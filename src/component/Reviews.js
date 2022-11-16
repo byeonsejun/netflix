@@ -1,13 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 const Reviews = ({ detailReviews }) => {
-
-    const [reviewsData, setReviewsData] = useState([]);
-    useEffect(() => {
-        setReviewsData(detailReviews.results)
-    }, [])
-    // console.log(reviewsData);
-
+    const [reviewsData] = useState(detailReviews.results);
     return (
         <div className='showing-reviews'>
             {

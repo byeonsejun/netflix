@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Banner = ({movie}) => {
-    // https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces
   return (
     <div 
     className='banner'

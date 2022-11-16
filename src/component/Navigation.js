@@ -8,18 +8,27 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Navigation = () => {
   const navigate = useNavigate();
-  const goToHome = () => {
-    navigate("/");
-  };
+
+  const getSearchName = (event) => {
+    event.preventDefault();
+    navigate(`/movies/?s=${event.target[0].value}&p=1&f=1`);
+    event.target[0].value = "";
+  }
+  const goToSearch = () => {
+    let searchInput = document.querySelector('.me-2.form-control').value;
+    navigate(`/movies/?s=${searchInput}&p=1&f=1`);
+    document.querySelector('.me-2.form-control').value = "";
+  }
+
   return (
     <div>
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container fluid>
-          <Navbar.Brand href="#">
+          <Navbar.Brand href="" className='mainLogo'>
             <img
-              onClick={goToHome}
+              onClick={()=>{ navigate("/") }}
               width={100}
-              src="https://i.pinimg.com/originals/08/68/dc/0868dcacc7c50ca2c7d35b27be81e5a9.png"
+              src="./logo.png"
               alt="logoimg"
             />
           </Navbar.Brand>
@@ -30,21 +39,17 @@ const Navigation = () => {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-              <Link className="nav-item" to="/">
-                Home
-              </Link>
-              <Link className="nav-item" to="/movies">
-                Movies
-              </Link>
+              <Link className="nav-item" to="/">Home</Link>
+              <Link className="nav-item" to="/movies">Movies</Link>
             </Nav>
-            <Form className="d-flex">
+            <Form className="d-flex" onSubmit={(event)=>getSearchName(event)}>
               <Form.Control
                 type="search"
                 placeholder="Search"
-                className="me-2"
+                className="me-2 search_input"
                 aria-label="Search"
               />
-              <Button variant="outline-danger">Search</Button>
+              <Button variant="outline-danger" className='search_btt' onClick={goToSearch} >Search</Button>
             </Form>
           </Navbar.Collapse>
         </Container>
