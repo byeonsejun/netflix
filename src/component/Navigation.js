@@ -28,7 +28,7 @@ const Navigation = () => {
             <img
               onClick={()=>{ navigate("/") }}
               width={100}
-              src="./logo.png"
+              src="https://sejun-netflix.netlify.app/logo.png"
               alt="logoimg"
             />
           </Navbar.Brand>
