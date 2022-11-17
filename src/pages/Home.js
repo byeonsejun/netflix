@@ -28,7 +28,7 @@ const Home = () => {
               <MovieSlide movies={popularMovies} />
               <h1>Top rated Movie</h1>
               <MovieSlide movies={topRatedMovies} />
-              <h1>upcoming Movie</h1>
+              <h1>Upcoming Movie</h1>
               <MovieSlide movies={upComingMovies} />
             </section>
           </>
