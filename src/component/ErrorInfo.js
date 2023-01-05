@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 const ErrorInfo = () => {
     const navigate = useNavigate();
     const backToHome = () => {
-        navigate(`/`);
+        navigate(`/`, {replace:true});
     }
   return (
     <div className='error_page'>

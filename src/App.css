@@ -683,7 +683,7 @@ input[type="range"]::-moz-slider-thumb {
 /* 에러페이지 보여주기  */
 .error_page {
   text-align: center;
-  padding-top: 25%;
+  padding-top: 20%;
 }
 .error_page div {
   font-size: 72px;
@@ -795,6 +795,11 @@ input[type="range"]::-moz-slider-thumb {
     --bs-pagination-padding-x: 0.75rem !important;
     --bs-pagination-padding-y: 0.375rem !important;
   }
+
+  .error_page {
+    padding-top: 30%;
+  }
+
 }
 
 @media (max-width: 576px) { 
