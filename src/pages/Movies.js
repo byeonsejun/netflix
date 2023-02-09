@@ -26,7 +26,7 @@ const Movies = () => {
       if(query.get("t") != null) { 
         setNowPage(Number(tabIdxNum));
         setQuery({t:query.get("t"), p:Number(tabIdxNum)});
-      } else if(query.get("s") != null) { 
+      } else if(query.get("s") != null) {
         setNowPage(Number(tabIdxNum));
         setQuery({s:query.get("s"), p:Number(tabIdxNum)});
       } 
@@ -88,11 +88,10 @@ const Movies = () => {
             </div>
           </Col>
           <Col xl="8" lg="8" sm="12" className='filter_card_wrap'>
-            {
-              nowContent.results.length === 0 
-              ? 
+            { nowContent.results && nowContent.results.length === 0 &&
                 <h1>검색한 결과가 없습니다.</h1>
-              :
+            }
+            { nowContent.results && nowContent.results.length > 0 &&  
                 nowContent.results.map((item,idx) => {
                   return <FilterCard key={idx} item={item} genreList={genreList} />
                 })
