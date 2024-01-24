@@ -1,104 +1,93 @@
+import { createSlice } from '@reduxjs/toolkit';
+
 let initialState = {
-    popularMovies:{},
-    topRatedMovies:{},
-    upComingMovies:{},
-    loading:true,
-    genreList:[],
-    detailMovie:{},
-    detailReviews:{},
-    detailRelated:{},
-    detailVideo:{},
-    filterMovie:{},
-    searchMovie:{},
-    nowContent:{},
-    nowPageNum: 1,
-    slectType:{},
-    filterFlag:true,
-    originalContent:{},
-}
+  popularMovies: {},
+  topRatedMovies: {},
+  upComingMovies: {},
+  loading: true,
+  genreList: [],
+  detailMovie: {},
+  detailReviews: {},
+  detailRelated: {},
+  detailVideo: {},
+  filterMovie: {},
+  searchMovie: {},
+  nowContent: {},
+  nowPageNum: 1,
+  slectType: {},
+  filterFlag: true,
+  originalContent: {},
+};
 
-function movieReducer(state=initialState,action){
-    let {type,payload} = action;
-    switch(type) {
+const movieSlice = createSlice({
+  name: 'movie',
+  initialState: initialState,
+  reducers: {
+    loadingFalse(state) {
+      // GET_MOVIES_FAILURE
+      state.loading = false;
+    },
+    loadingTrue(state) {
+      // GET_MOVIES_REQUEST
+      state.loading = true;
+    },
+    getHomePageAllMovies(state, action) {
+      // GET_MOVIES_SUCCESS
+      state.popularMovies = action.payload.popularMovies;
+      state.topRatedMovies = action.payload.topRatedMovies;
+      state.upComingMovies = action.payload.upComingMovies;
+      state.genreList = action.payload.genreList;
+      state.loading = false;
+    },
+    getDetailMovie(state, action) {
+      // GET_DETAIL_SUCCESS
+      state.detailMovie = action.payload.detailMovie;
+      state.detailReviews = action.payload.detailReviews;
+      state.detailRelated = action.payload.detailRelated;
+      state.detailVideo = action.payload.detailVideo;
+      state.genreList = action.payload.genreList;
+      state.loading = false;
+    },
+    getFilterSuccess(state, action) {
+      // GET_FILTER_SUCCESS
+      state.filterMovie = action.payload.filterMovie;
+      state.nowContent = action.payload.filterMovie;
+      state.originalContent = action.payload.filterMovie;
+      state.loading = false;
+    },
+    getSearchSuccess(state, action) {
+      // GET_SEARCH_SUCCESS
+      state.searchMovie = action.payload.searchMovie;
+      state.nowContent = action.payload.searchMovie;
+      state.originalContent = action.payload.searchMovie;
+      state.loading = false;
+    },
+    pageNumChange(state, action) {
+      // PAGE_NUM_CHANGE
+      state.nowPageNum = action.payload.nowPageNum;
+      state.loading = false;
+    },
+    getSelectSuccess(state, action) {
+      // GET_SELECT_SUCCESS
+      state.slectType = action.payload.slectType;
+      state.nowContent = action.payload.slectType;
+      state.originalContent = action.payload.slectType;
+      state.loading = false;
+    },
+    getNewResult(state, action) {
+      // GET_NEW_RESULT
+      state.nowContent = action.payload.newResult;
+      state.loading = false;
+    },
+    getGenresFilter(state, action) {
+      // GET_GENRES_FILTER
+      state.nowContent = action.payload.genresFilter;
+      state.originalContent = action.payload.genresFilter;
+      state.loading = false;
+    },
+  },
+});
 
-        case "GET_MOVIES_FAILURE":
-            return { ...state, loading:false};
-        case "GET_MOVIES_REQUEST":
-            return { ...state, loading:true};
-
-        case "GET_MOVIES_SUCCESS":
-            return {
-                ...state, 
-                popularMovies: payload.popularMovies,
-                topRatedMovies: payload.topRatedMovies,
-                upComingMovies: payload.upComingMovies,
-                genreList: payload.genreList,
-                loading: false,
-            };
-
-        case "GET_DETAIL_SUCCESS":
-            return {
-                ...state,
-                detailMovie: payload.detailMovie,
-                detailReviews: payload.detailReviews,
-                detailRelated: payload.detailRelated,
-                detailVideo: payload.detailVideo,
-                genreList: payload.genreList,
-                loading: false,
-            };
-
-        case "GET_FILTER_SUCCESS":
-            return {
-                ...state, 
-                filterMovie: payload.filterMovie,
-                nowContent: payload.filterMovie,
-                originalContent: payload.filterMovie,
-                loading: false,
-            };
-
-        case "GET_SEARCH_SUCCESS":
-            return {
-                ...state, 
-                searchMovie: payload.searchMovie,
-                nowContent: payload.searchMovie,
-                originalContent: payload.searchMovie,
-                loading: false,
-            };
-        case "PAGE_NUM_CHANGE":
-            return {
-                ...state,
-                nowPageNum: payload.nowPageNum,
-                loading: false,
-            };
-
-        case "GET_SELECT_SUCCESS":
-            return {
-                ...state,
-                slectType: payload.slectType,
-                nowContent: payload.slectType,
-                originalContent: payload.slectType,
-                loading: false,
-            };
-
-        case "GET_NEW_RESULT":
-            return {
-                ...state,
-                nowContent: payload.newResult,
-                loading: false,
-            };
-            
-        case "GET_GENRES_FILTER":
-            return {
-                ...state,
-                nowContent: payload.genresFilter,
-                originalContent: payload.genresFilter,
-                loading: false,
-            }
-            
-
-        default:
-            return {...state};
-    }
-}
-
-export default movieReducer;
+const movieActions = movieSlice.actions;
+const movieReducer = movieSlice.reducer;
+export { movieReducer, movieActions };
