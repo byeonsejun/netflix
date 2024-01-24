@@ -24,7 +24,6 @@ const MovieDetail = () => {
     (state) => state.movie
   );
 
-  let [readyData, setReadyData] = useState(false);
   const [show, setShow] = useState(false);
 
   const opts = {

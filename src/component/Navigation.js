@@ -11,7 +11,7 @@ const Navigation = () => {
 
   const getSearchName = (event) => {
     event.preventDefault();
-    navigate(`/movies/?s=${event.target[0].value}&p=1&f=1`);
+    navigate(`/movies?s=${event.target[0].value}&p=1&f=1`);
     event.target[0].value = '';
   };
   const goToSearch = () => {
