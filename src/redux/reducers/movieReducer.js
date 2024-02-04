@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 let initialState = {
   popularMovies: {},
-  topRatedMovies: {},
+  animationList: {},
+  actionList: {},
   upComingMovies: {},
   loading: true,
   genreList: [],
@@ -34,7 +35,8 @@ const movieSlice = createSlice({
     getHomePageAllMovies(state, action) {
       // GET_MOVIES_SUCCESS
       state.popularMovies = action.payload.popularMovies;
-      state.topRatedMovies = action.payload.topRatedMovies;
+      state.animationList = action.payload.animationList;
+      state.actionList = action.payload.actionList;
       state.upComingMovies = action.payload.upComingMovies;
       state.genreList = action.payload.genreList;
       state.loading = false;

@@ -7,7 +7,7 @@ import PuffLoader from 'react-spinners/PuffLoader';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { popularMovies, topRatedMovies, upComingMovies, loading } = useSelector((state) => state.movie);
+  const { popularMovies, animationList, actionList, upComingMovies, loading } = useSelector((state) => state.movie);
 
   useEffect(() => {
     dispatch(movieAction.getHomeMovies());
@@ -30,12 +30,14 @@ const Home = () => {
         <>
           <Banner movie={popularMovies.results[0]} />
           <section className="main_slider">
-            <h1>Popular Movie</h1>
+            <h1>Popular on Netflix</h1>
             <MovieSlide movies={popularMovies} />
-            <h1>Top rated Movie</h1>
-            <MovieSlide movies={topRatedMovies} />
-            <h1>Upcoming Movie</h1>
+            <h1>Coming This Week</h1>
             <MovieSlide movies={upComingMovies} />
+            <h1>Animation</h1>
+            <MovieSlide movies={animationList} />
+            <h1>Action</h1>
+            <MovieSlide movies={actionList} />
           </section>
         </>
       ) : null}

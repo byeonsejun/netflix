@@ -8,21 +8,30 @@ function getHomeMovies() {
       dispatch(movieActions.loadingTrue());
 
       const popularMovieApi = api.get(`/movie/popular?api_key=${API_KEY}&language=en-US&page=1`);
-      const topRatedApi = api.get(`/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`);
       const upComingApi = api.get(`/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`);
       const genreApi = api.get(`/genre/movie/list?api_key=${API_KEY}&language=en-US`);
 
-      let [popularMovies, topRatedMovies, upComingMovies, genreList] = await Promise.all([
+      const animationApi = api.get(
+        `/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=16&with_watch_monetization_types=free`
+      );
+
+      const actionApi = api.get(
+        `/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=28&with_watch_monetization_types=free`
+      );
+
+      let [popularMovies, upComingMovies, genreList, animationList, actionList] = await Promise.all([
         popularMovieApi,
-        topRatedApi,
         upComingApi,
         genreApi,
+        animationApi,
+        actionApi,
       ]);
 
       dispatch(
         movieActions.getHomePageAllMovies({
           popularMovies: popularMovies.data,
-          topRatedMovies: topRatedMovies.data,
+          animationList: animationList.data,
+          actionList: actionList.data,
           upComingMovies: upComingMovies.data,
           genreList: genreList.data.genres,
         })
