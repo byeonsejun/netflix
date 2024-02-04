@@ -13,7 +13,7 @@ const Home = () => {
     dispatch(movieAction.getHomeMovies());
   }, [dispatch]);
 
-  if (loading) {
+  if (loading || Object.keys(popularMovies).length === 0) {
     return (
       <PuffLoader
         color="#dc143c"

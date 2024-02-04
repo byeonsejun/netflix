@@ -16,6 +16,7 @@ import { useState } from 'react';
 import Reviews from '../component/Reviews';
 import RelatedMovies from '../component/RelatedMovies';
 import ErrorInfo from '../component/ErrorInfo';
+import { addLocalStorage, initLocalStorage, readLocalStorage } from '../util/storage';
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -25,6 +26,7 @@ const MovieDetail = () => {
   );
 
   const [show, setShow] = useState(false);
+  const [like, setLike] = useState(false);
 
   const opts = {
     height: '100%',
@@ -34,8 +36,28 @@ const MovieDetail = () => {
     },
   };
 
+  const likeSwitch = () => {
+    const currentValue = readLocalStorage('like');
+    if (currentValue === null) {
+      addLocalStorage('like', [id]);
+      setLike(true);
+      return;
+    }
+    const current = currentValue.find((storageId) => storageId === id);
+    if (current === undefined) {
+      currentValue.push(id);
+      addLocalStorage('like', currentValue);
+      setLike(true);
+    } else {
+      const newValue = currentValue.filter((storageId) => storageId !== current);
+      addLocalStorage('like', newValue);
+      setLike(false);
+    }
+  };
+
   useEffect(() => {
     dispatch(movieAction.getMovieDetails(id));
+    initLocalStorage('like', id) ? setLike(true) : setLike(false);
   }, [dispatch, id]);
 
   if (loading) {
@@ -100,10 +122,10 @@ const MovieDetail = () => {
                   <div className="product-info-list variant-item">
                     <ul>
                       <li>
-                        <Badge bg="danger">Budget</Badge>${detailMovie.budget}
+                        <Badge bg="danger">Budget</Badge>${detailMovie.budget.toLocaleString()}
                       </li>
                       <li>
-                        <Badge bg="danger">Revenue</Badge>${detailMovie.revenue}
+                        <Badge bg="danger">Revenue</Badge>${detailMovie.revenue.toLocaleString()}
                       </li>
                       <li>
                         <Badge bg="danger">Release Day</Badge>
@@ -111,7 +133,7 @@ const MovieDetail = () => {
                       </li>
                       <li>
                         <Badge bg="danger">Time</Badge>
-                        {detailMovie.runtime}
+                        {detailMovie.runtime} minute
                       </li>
                     </ul>
                   </div>
@@ -138,7 +160,10 @@ const MovieDetail = () => {
                       )
                     ) : null}
                     <div className="product-details-action">
-                      <button className="details-action-icon"> ♥ </button>
+                      <button className={`details-action-icon ${like ? 'active' : ''}`} onClick={likeSwitch}>
+                        {' '}
+                        ♥{' '}
+                      </button>
                     </div>
                   </div>
                 </div>
