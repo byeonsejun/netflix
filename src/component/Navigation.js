@@ -27,6 +27,10 @@ const Navigation = () => {
   const goToSearch = (event) => {
     event.preventDefault();
     let inputValue = searchText.current.value;
+    if (inputValue.trim() === '') {
+      alert('검색어를 입력해주세요.');
+      return;
+    }
     navigate(`/movies?s=${inputValue}&p=1&f=1`);
     searchText.current.value = '';
   };
@@ -40,14 +44,7 @@ const Navigation = () => {
       <Navbar variant="dark" expand="lg">
         <Container fluid>
           <Navbar.Brand href="" className="mainLogo">
-            <img
-              onClick={() => {
-                navigate('/');
-              }}
-              width={100}
-              src={mianLogo}
-              alt="logoimg"
-            />
+            <img onClick={() => navigate('/')} width={100} src={mianLogo} alt="logoimg" />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll" className="nav_wrap">

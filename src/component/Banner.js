@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { MdInfoOutline } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 const Banner = ({ movie }) => {
   const navigate = useNavigate();
-  const goToDetailMovie = () => {
-    navigate(`/movies/${movie.id}`);
-  };
+  const goToDetailMovie = () => navigate(`/movies/${movie.id}`);
 
   return (
     <div

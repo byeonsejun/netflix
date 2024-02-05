@@ -80,20 +80,16 @@ function getFilterMovies(movieType, nowPage) {
   return async (dispatch) => {
     try {
       dispatch(movieActions.loadingTrue());
-      const filterMovieApi = api.get(`/movie/${movieType}?api_key=${API_KEY}&language=en-US&page=${nowPage}`);
-
-      let nowPageNum = nowPage;
-      let [filterMovie] = await Promise.all([filterMovieApi]);
+      const filterMovieApi = await api.get(`/movie/${movieType}?api_key=${API_KEY}&language=en-US&page=${nowPage}`);
 
       dispatch(
         movieActions.getFilterSuccess({
-          filterMovie: filterMovie.data,
+          filterMovie: filterMovieApi.data,
         })
       );
-
       dispatch(
         movieActions.pageNumChange({
-          nowPageNum: nowPageNum.data,
+          nowPageNum: nowPage,
         })
       );
     } catch (err) {
@@ -107,15 +103,13 @@ function getSearchMovie(search, pageNum) {
     try {
       dispatch(movieActions.loadingTrue());
 
-      const searchMovieApi = api.get(
+      const searchMovieApi = await api.get(
         `/search/movie?api_key=${API_KEY}&language=en-US&page=${pageNum}&include_adult=false&query=${search}`
       );
 
-      let [searchMovie] = await Promise.all([searchMovieApi]);
-
       dispatch(
         movieActions.getSearchSuccess({
-          searchMovie: searchMovie.data,
+          searchMovie: searchMovieApi.data,
         })
       );
     } catch (err) {
@@ -129,15 +123,13 @@ function getSelectType(type, pageNum) {
     try {
       dispatch(movieActions.loadingTrue());
 
-      const selectTypeApi = api.get(
+      const selectTypeApi = await api.get(
         `/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=${type}&include_adult=false&include_video=false&page=${pageNum}&with_watch_monetization_types=free`
       );
 
-      let [slectType] = await Promise.all([selectTypeApi]);
-
       dispatch(
         movieActions.getSelectSuccess({
-          slectType: slectType.data,
+          slectType: selectTypeApi.data,
         })
       );
     } catch (err) {
@@ -150,7 +142,6 @@ function ChangeResults(newNowContent) {
   return async (dispatch) => {
     try {
       dispatch(movieActions.loadingTrue());
-
       dispatch(
         movieActions.getNewResult({
           newResult: newNowContent,
@@ -167,14 +158,29 @@ function getGenresFilter(gT, p, gN) {
     try {
       dispatch(movieActions.loadingTrue());
 
-      const genresFilterApi = api.get(
+      const genresFilterApi = await api.get(
         `/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=${gT}&include_adult=false&include_video=false&page=${p}&with_genres=${gN}&with_watch_monetization_types=free`
       );
-      let [genresFilter] = await Promise.all([genresFilterApi]);
 
       dispatch(
         movieActions.getGenresFilter({
-          genresFilter: genresFilter.data,
+          genresFilter: genresFilterApi.data,
+        })
+      );
+    } catch (err) {
+      dispatch(movieActions.loadingFalse());
+    }
+  };
+}
+
+function getGenres() {
+  return async (dispatch) => {
+    try {
+      dispatch(movieActions.loadingTrue());
+      const genreApi = await api.get(`/genre/movie/list?api_key=${API_KEY}&language=en-US`);
+      dispatch(
+        movieActions.getGenres({
+          genreList: genreApi.data.genres,
         })
       );
     } catch (err) {
@@ -191,4 +197,5 @@ export const movieAction = {
   getSelectType,
   ChangeResults,
   getGenresFilter,
+  getGenres,
 };

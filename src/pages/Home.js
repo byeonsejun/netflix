@@ -26,21 +26,19 @@ const Home = () => {
 
   return (
     <div id="home">
-      {!loading ? (
-        <>
-          <Banner movie={popularMovies.results[0]} />
-          <section className="main_slider">
-            <h1>Popular on Netflix</h1>
-            <MovieSlide movies={popularMovies} />
-            <h1>Coming This Week</h1>
-            <MovieSlide movies={upComingMovies} />
-            <h1>Animation</h1>
-            <MovieSlide movies={animationList} />
-            <h1>Action</h1>
-            <MovieSlide movies={actionList} />
-          </section>
-        </>
-      ) : null}
+      <>
+        <Banner movie={popularMovies.results[0]} />
+        <section className="main_slider">
+          <h1>Popular on Netflix</h1>
+          <MovieSlide movies={popularMovies} />
+          <h1>Coming This Week</h1>
+          <MovieSlide movies={upComingMovies} />
+          <h1>Animation</h1>
+          <MovieSlide movies={animationList} />
+          <h1>Action</h1>
+          <MovieSlide movies={actionList} />
+        </section>
+      </>
     </div>
   );
 };

@@ -87,6 +87,9 @@ const movieSlice = createSlice({
       state.originalContent = action.payload.genresFilter;
       state.loading = false;
     },
+    getGenres(state, action) {
+      state.genreList = action.payload.genreList;
+    },
   },
 });
 
