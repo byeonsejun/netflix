@@ -8,10 +8,13 @@ import store from './redux/store';
 
 function App() {
   return (
-    <Provider store={store}>
-      <Navigation />
-      <Outlet />
-    </Provider>
+    <>
+      <Provider store={store}>
+        <Navigation />
+        <Outlet />
+      </Provider>
+      <div id="portal" />
+    </>
   );
 }
 

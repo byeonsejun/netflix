@@ -6,6 +6,7 @@ let initialState = {
   actionList: {},
   upComingMovies: {},
   loading: true,
+  globalModalId: null,
   genreList: [],
   detailMovie: {},
   detailReviews: {},
@@ -31,6 +32,12 @@ const movieSlice = createSlice({
     loadingTrue(state) {
       // GET_MOVIES_REQUEST
       state.loading = true;
+    },
+    removeGlobalModalId(state) {
+      state.globalModalId = null;
+    },
+    addGlobalModalId(state, action) {
+      state.globalModalId = action.payload;
     },
     getHomePageAllMovies(state, action) {
       // GET_MOVIES_SUCCESS
@@ -89,6 +96,9 @@ const movieSlice = createSlice({
     },
     getGenres(state, action) {
       state.genreList = action.payload.genreList;
+    },
+    getYoutubeVideo(state, action) {
+      state.detailVideo = action.payload.detailVideo;
     },
   },
 });

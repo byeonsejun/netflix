@@ -1,10 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Badge } from 'react-bootstrap';
 import PuffLoader from 'react-spinners/PuffLoader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImdb } from '@fortawesome/free-brands-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
+
+import adultSvg from './../images/adult.svg';
+import kidsSvg from './../images/kids.svg';
+import bestImg from './../images/best.png';
 
 const RelatedMovies = ({ detailRelated, genreList, loading }) => {
   const navigate = useNavigate();
@@ -37,23 +39,31 @@ const RelatedMovies = ({ detailRelated, genreList, loading }) => {
               <div className="items"></div>
               <h2 className="related_title">{item.title}</h2>
               <div className="related_danger">
+                <span className="genre_left">Genre: </span>
                 {item.genre_ids.length > 1 &&
                   item.genre_ids.map((id, idx) => (
-                    <Badge key={idx} bg="danger">
+                    <span key={idx}>
                       {genreList.find((item) => item.id === id).name}
-                    </Badge>
+                      <span>, </span>
+                    </span>
                   ))}
               </div>
               <div className="related_info">
                 <span>
-                  <FontAwesomeIcon icon={faImdb} className="icon-imdb" />
-                  {item.vote_average}
+                  <img className="best_img" src={bestImg} alt="best icon" />
+                  {item.vote_average.toFixed(1)}
                 </span>
                 <span>
                   <FontAwesomeIcon icon={faYoutube} className="icon-youtube" />
-                  {item.popularity}
+                  {item.popularity.toFixed(1)} K
                 </span>
-                <span className="eightteen">{item.adult ? 'R-rated' : 'Under 18'}</span>
+                <span className="eightteen">
+                  {item.adult ? (
+                    <img className="adult_img" src={adultSvg} alt="adult img" />
+                  ) : (
+                    <img className="kids_img" src={kidsSvg} alt="kids img" />
+                  )}
+                </span>
               </div>
             </div>
           </div>

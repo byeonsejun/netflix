@@ -30,13 +30,13 @@ const Home = () => {
         <Banner movie={popularMovies.results[0]} />
         <section className="main_slider">
           <h1>Popular on Netflix</h1>
-          <MovieSlide movies={popularMovies} />
+          <MovieSlide movies={popularMovies} page={'main'} />
           <h1>Coming This Week</h1>
-          <MovieSlide movies={upComingMovies} />
+          <MovieSlide movies={upComingMovies} page={'main'} />
           <h1>Animation</h1>
-          <MovieSlide movies={animationList} />
+          <MovieSlide movies={animationList} page={'main'} />
           <h1>Action</h1>
-          <MovieSlide movies={actionList} />
+          <MovieSlide movies={actionList} page={'main'} />
         </section>
       </>
     </div>

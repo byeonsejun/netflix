@@ -189,6 +189,22 @@ function getGenres() {
   };
 }
 
+function getYoutubeVideo(id, uuid) {
+  return async (dispatch) => {
+    try {
+      dispatch(movieActions.addGlobalModalId(uuid));
+      const detailVideoApi = await api.get(`/movie/${id}/videos?api_key=${API_KEY}&language=en-US`);
+      dispatch(
+        movieActions.getYoutubeVideo({
+          detailVideo: detailVideoApi.data,
+        })
+      );
+    } catch (err) {
+      dispatch(movieActions.removeGlobalModalId());
+    }
+  };
+}
+
 export const movieAction = {
   getHomeMovies,
   getMovieDetails,
@@ -198,4 +214,5 @@ export const movieAction = {
   ChangeResults,
   getGenresFilter,
   getGenres,
+  getYoutubeVideo,
 };

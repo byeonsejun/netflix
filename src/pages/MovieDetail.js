@@ -1,22 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { movieAction } from './../redux/actions/MovieAction';
 import PuffLoader from 'react-spinners/PuffLoader';
-import { Container, Row, Col, Badge, Tab, Tabs, Button, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Tab, Tabs, Button } from 'react-bootstrap';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImdb } from '@fortawesome/free-brands-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 import YouTube from 'react-youtube';
-
-import { useState } from 'react';
 import Reviews from '../component/Reviews';
 import RelatedMovies from '../component/RelatedMovies';
 import ErrorInfo from '../component/ErrorInfo';
 import { addLocalStorage, initLocalStorage, readLocalStorage } from '../util/storage';
+import ModalPortal from '../component/ui/ModalPortal';
+import VideoModal from '../component/VideoModal';
+
+import adultSvg from './../images/adult.svg';
+import kidsSvg from './../images/kids.svg';
+import bestImg from './../images/best.png';
+import { FaRegThumbsUp } from 'react-icons/fa';
+
+const opts = {
+  height: '100%',
+  width: '100%',
+  playerVars: {
+    autoplay: 1,
+  },
+};
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -25,16 +37,8 @@ const MovieDetail = () => {
     (state) => state.movie
   );
 
-  const [show, setShow] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [like, setLike] = useState(false);
-
-  const opts = {
-    height: '100%',
-    width: '100%',
-    playerVars: {
-      autoplay: 1,
-    },
-  };
 
   const likeSwitch = () => {
     const currentValue = readLocalStorage('like');
@@ -60,6 +64,10 @@ const MovieDetail = () => {
     initLocalStorage('like', id) ? setLike(true) : setLike(false);
   }, [dispatch, id]);
 
+  useEffect(() => {
+    console.log(detailMovie);
+  }, [detailMovie]);
+
   if (loading) {
     return (
       <PuffLoader
@@ -83,30 +91,32 @@ const MovieDetail = () => {
                 </div>
               </Col>
               <Col xl="6" lg="8">
-                <div className="detail_danger">
-                  {detailMovie.genres.map((item) => (
-                    <Badge key={item.name} bg="danger">
-                      {item.name}
-                    </Badge>
-                  ))}
-                </div>
                 <h2 className="detail_title">{detailMovie.original_title}</h2>
                 <h3>{detailMovie.tagline}</h3>
+                <div className="detail_danger">
+                  <span className="genre_left">Genre: </span>
+                  {detailMovie.genres.map((item, idx) => (
+                    <span key={item.name}>
+                      {item.name}
+                      {detailMovie.genres.length > idx + 1 && ', '}
+                    </span>
+                  ))}
+                </div>
                 <div className="movie_social_details">
                   <ul className="overlay_info">
                     <li>
-                      <FontAwesomeIcon icon={faImdb} className="icon-imdb" />
-                      <span className="imb-score">{detailMovie.vote_average}</span>
+                      <img className="best_img" src={bestImg} alt="best icon" />
+                      <span>{detailMovie.vote_average.toFixed(1)}</span>
                     </li>
                     <li>
                       <FontAwesomeIcon icon={faYoutube} className="icon-youtube" />
-                      <span className="imb-score">{detailMovie.popularity}</span>
+                      <span className="imb-score">{detailMovie.popularity.toFixed(1)} K</span>
                     </li>
                     <li>
                       {detailMovie.adult ? (
-                        <span className="eightteen">R-rated</span>
+                        <img className="adult_img" src={adultSvg} alt="adult img" />
                       ) : (
-                        <span className="eightteen">Under 18</span>
+                        <img className="kids_img" src={kidsSvg} alt="kids img" />
                       )}
                     </li>
                   </ul>
@@ -118,47 +128,31 @@ const MovieDetail = () => {
                   <div className="product-info-list variant-item">
                     <ul>
                       <li>
-                        <Badge bg="danger">Budget</Badge>${detailMovie.budget.toLocaleString()}
+                        <span>production budget: </span>$ {detailMovie.budget.toLocaleString()}
                       </li>
                       <li>
-                        <Badge bg="danger">Revenue</Badge>${detailMovie.revenue.toLocaleString()}
+                        <span>box office revenue: </span>$ {detailMovie.revenue.toLocaleString()}
                       </li>
                       <li>
-                        <Badge bg="danger">Release Day</Badge>
-                        {detailMovie.release_date}
+                        <span>Release Day: </span> {detailMovie.release_date}
                       </li>
                       <li>
-                        <Badge bg="danger">Time</Badge>
-                        {detailMovie.runtime} minute
+                        <span>Running Time: </span> {detailMovie.runtime} minute
                       </li>
                     </ul>
                   </div>
-                  <div className="product-action-details variant-item">
-                    {!loading ? (
-                      detailVideo.results.length === 0 ? null : (
-                        <div className="modal_wrap">
-                          <Button id="model-btn-open" onClick={() => setShow(true)}>
-                            <FontAwesomeIcon icon={faYoutube} className="icon-youtube" />
-                            Watch Trailer
-                          </Button>
-                          <Modal
-                            show={show}
-                            onHide={() => setShow(false)}
-                            aria-labelledby="contained-modal-title-vcenter"
-                            centered
-                          >
-                            <Modal.Header closeButton></Modal.Header>
-                            <Modal.Body>
-                              <YouTube videoId={!loading ? detailVideo.results[0].key : null} opts={opts} />
-                            </Modal.Body>
-                          </Modal>
-                        </div>
-                      )
-                    ) : null}
+                  <div className="product-action-details variant-item whatch_wrap">
+                    {detailVideo.results.length > 0 && (
+                      <div className="modal_wrap">
+                        <Button id="model-btn-open" onClick={() => setOpenModal(true)}>
+                          <FontAwesomeIcon icon={faYoutube} className="icon-youtube" />
+                          Watch Trailer
+                        </Button>
+                      </div>
+                    )}
                     <div className="product-details-action">
                       <button className={`details-action-icon ${like ? 'active' : ''}`} onClick={likeSwitch}>
-                        {' '}
-                        ♥{' '}
+                        <FaRegThumbsUp className="save_icon" />
                       </button>
                     </div>
                   </div>
@@ -179,6 +173,13 @@ const MovieDetail = () => {
               </Col>
             </Row>
           </Container>
+          {openModal && (
+            <ModalPortal>
+              <VideoModal onClose={() => setOpenModal(false)}>
+                <YouTube videoId={!loading && detailVideo.results[0].key} opts={opts} />
+              </VideoModal>
+            </ModalPortal>
+          )}
         </section>
       ) : (
         <ErrorInfo />

@@ -1,14 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import MovieCard from './MovieCard';
-
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-const MovieSlide = ({ movies }) => {
+const MovieSlide = ({ movies, page }) => {
   const { genreList } = useSelector((state) => state.movie);
   return (
     <div>
@@ -40,11 +39,13 @@ const MovieSlide = ({ movies }) => {
           2340: { slidesPerView: 7, slidesPerGroup: 7 },
         }}
       >
-        {movies.results.map((item, idx) => (
-          <SwiperSlide key={idx}>
-            <MovieCard item={item} genreList={genreList} />
-          </SwiperSlide>
-        ))}
+        {movies.results.map((item, idx) => {
+          return (
+            <SwiperSlide key={idx}>
+              <MovieCard item={item} genreList={genreList} page={page && page} />
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </div>
   );
