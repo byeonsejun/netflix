@@ -2,7 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImdb, faYoutube } from '@fortawesome/free-brands-svg-icons';
-import { Badge } from 'react-bootstrap';
+
+import adultSvg from './../images/adult.svg';
+import kidsSvg from './../images/kids.svg';
+import bestImg from './../images/best.png';
+
 const FilterCard = ({ item, genreList }) => {
   const navigate = useNavigate();
   return (
@@ -15,13 +19,17 @@ const FilterCard = ({ item, genreList }) => {
             alt={`posterImg`}
           />
           <h1>{item.title}</h1>
-          <h4>{item.release_date ? item.release_date.substring(0, 4) : null}</h4>
+          {item.release_date && <h4>{item.release_date.substring(0, 4)}</h4>}
           <div className="overlay_badge">
-            {item.genre_ids.map((id, idx) => (
-              <Badge key={idx} bg="danger">
-                {genreList.length > 0 && genreList.find((item) => item.id === id).name}
-              </Badge>
-            ))}
+            <span className="genre_left">Genre: </span>
+            {item.genre_ids.map((id, idx) => {
+              return (
+                <span key={idx}>
+                  {genreList.length > 0 && genreList.find((item) => item.id === id).name}
+                  <span>,</span>
+                </span>
+              );
+            })}
           </div>
         </div>
         <div className="movie_desc">
@@ -31,18 +39,24 @@ const FilterCard = ({ item, genreList }) => {
           <ul>
             <li>
               <span className="imb-score">
-                <FontAwesomeIcon icon={faImdb} className="icon-imdb" />
-                {item.vote_average && item.vote_average}
+                <img className="best_img" src={bestImg} alt="best icon" />
+                {item.vote_average && item.vote_average.toFixed(1)}
               </span>
             </li>
             <li>
               <span className="imb-score">
                 <FontAwesomeIcon icon={faYoutube} className="icon-youtube" />
-                {item.popularity && item.popularity.toFixed(1)}
+                {item.popularity && item.popularity.toFixed(1)} K
               </span>
             </li>
             <li>
-              <span className="eightteen">{item.adult ? 'R-rated' : 'Under 18'}</span>
+              <span className="eightteen">
+                {item.adult ? (
+                  <img className="adult_img" src={adultSvg} alt="adult img" />
+                ) : (
+                  <img className="kids_img" src={kidsSvg} alt="kids img" />
+                )}
+              </span>
             </li>
           </ul>
         </div>

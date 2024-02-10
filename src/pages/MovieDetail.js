@@ -13,7 +13,7 @@ import YouTube from 'react-youtube';
 import Reviews from '../component/Reviews';
 import RelatedMovies from '../component/RelatedMovies';
 import ErrorInfo from '../component/ErrorInfo';
-import { addLocalStorage, initLocalStorage, readLocalStorage } from '../util/storage';
+import { addLocalStorage, initLocalStorage, readLocalStorage } from '../util/util';
 import ModalPortal from '../component/ui/ModalPortal';
 import VideoModal from '../component/VideoModal';
 

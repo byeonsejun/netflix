@@ -205,6 +205,21 @@ function getYoutubeVideo(id, uuid) {
   };
 }
 
+function getUpComingMovies() {
+  return async (dispatch) => {
+    try {
+      const upComingMovies = await api.get(`/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`);
+      dispatch(
+        movieActions.getUpComingMovies({
+          upComingMovies: upComingMovies.data,
+        })
+      );
+    } catch (err) {
+      throw new Error('새로운 영화목록을 불러오는데 실패하였습니다.');
+    }
+  };
+}
+
 export const movieAction = {
   getHomeMovies,
   getMovieDetails,
@@ -215,4 +230,5 @@ export const movieAction = {
   getGenresFilter,
   getGenres,
   getYoutubeVideo,
+  getUpComingMovies,
 };

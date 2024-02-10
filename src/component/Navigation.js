@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
@@ -7,6 +8,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import mianLogo from './../images/logo.png';
 
 import { FaBell, FaUserAlt } from 'react-icons/fa';
+import { movieAction } from '../redux/actions/MovieAction';
 
 const navLink = [
   { text: 'Home', class: 'nav-item', to: '/' },
@@ -14,11 +16,14 @@ const navLink = [
 ];
 
 const headerUi = [
-  { text: 'Bell', icon: <FaBell />, point: true },
-  { text: 'User', icon: <FaUserAlt />, active: false },
+  { text: 'Bell', icon: <FaBell />, point: true, id: 'bell_ui' },
+  // { text: 'User', icon: <FaUserAlt />, active: false, id: 'user_ui' },
 ];
 
 const Navigation = () => {
+  const dispatch = useDispatch();
+
+  const { upComingMovies, loading } = useSelector((state) => state.movie);
   const navigate = useNavigate();
   const location = useLocation();
   const searchText = useRef();
@@ -34,6 +39,14 @@ const Navigation = () => {
     navigate(`/movies?s=${inputValue}&p=1&f=1`);
     searchText.current.value = '';
   };
+
+  const getUpComingMovies = () => dispatch(movieAction.getUpComingMovies());
+
+  useEffect(() => {
+    if (!loading && Object.keys(upComingMovies).length === 0) {
+      getUpComingMovies();
+    }
+  }, [upComingMovies, loading]);
 
   useEffect(() => {
     location.pathname === '/' ? setNav('Home') : setNav('Movies');
@@ -76,10 +89,33 @@ const Navigation = () => {
             <div className="header_ui">
               <ul>
                 {headerUi.map((ui) => (
-                  <li key={ui.text} className={ui.point ? 'point' : ''}>
+                  <li key={ui.text} id={ui.id} className={`${ui.point ? 'point' : ''}`}>
                     {ui.icon}
                   </li>
                 ))}
+                <div id="bell_modal">
+                  <h3>What's New</h3>
+                  <div className="bell_popup_wrap">
+                    <p className="popup_info">New Content </p>
+                    <div className="same_content_box">
+                      {!loading &&
+                        Object.keys(upComingMovies).length !== 0 &&
+                        upComingMovies.results.map((item, idx) => (
+                          <div className="bell_content" key={idx}>
+                            <div className="bell_content_img_wrap">
+                              <img
+                                src={`
+                                https://image.tmdb.org/t/p/original/${item.poster_path}
+                                `}
+                                alt="new img"
+                                className="bell_content_img"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                </div>
               </ul>
             </div>
           </Navbar.Collapse>

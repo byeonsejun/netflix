@@ -100,6 +100,9 @@ const movieSlice = createSlice({
     getYoutubeVideo(state, action) {
       state.detailVideo = action.payload.detailVideo;
     },
+    getUpComingMovies(state, action) {
+      state.upComingMovies = action.payload.upComingMovies;
+    },
   },
 });
 
