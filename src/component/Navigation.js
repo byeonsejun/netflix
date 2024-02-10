@@ -42,6 +42,8 @@ const Navigation = () => {
 
   const getUpComingMovies = () => dispatch(movieAction.getUpComingMovies());
 
+  const handlePopup = (id) => navigate(`/movies/${id}`);
+
   useEffect(() => {
     if (!loading && Object.keys(upComingMovies).length === 0) {
       getUpComingMovies();
@@ -101,7 +103,7 @@ const Navigation = () => {
                       {!loading &&
                         Object.keys(upComingMovies).length !== 0 &&
                         upComingMovies.results.map((item, idx) => (
-                          <div className="bell_content" key={idx}>
+                          <div className="bell_content" key={idx} onClick={() => handlePopup(item.id)}>
                             <div className="bell_content_img_wrap">
                               <img
                                 src={`
