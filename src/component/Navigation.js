@@ -7,7 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import mianLogo from './../images/logo.png';
 
-import { FaBell, FaUserAlt } from 'react-icons/fa';
+import { FaBell } from 'react-icons/fa';
 import { movieAction } from '../redux/actions/MovieAction';
 
 const navLink = [
@@ -48,6 +48,7 @@ const Navigation = () => {
     if (!loading && Object.keys(upComingMovies).length === 0) {
       getUpComingMovies();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [upComingMovies, loading]);
 
   useEffect(() => {
