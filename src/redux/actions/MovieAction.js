@@ -2,6 +2,19 @@ import api from '../api';
 import { movieActions } from '../reducers/movieReducer';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
+const BANNER_SIZE = window.innerWidth <= 600 ? 'w300' : 'w780';
+
+function preloadBannerImage(backdropPath) {
+  if (!backdropPath || document.getElementById('banner-preload')) return;
+  const link = document.createElement('link');
+  link.id = 'banner-preload';
+  link.rel = 'preload';
+  link.as = 'image';
+  link.href = `https://image.tmdb.org/t/p/${BANNER_SIZE}${backdropPath}`;
+  link.fetchPriority = 'high';
+  document.head.appendChild(link);
+}
+
 function getHomeMovies() {
   return async (dispatch) => {
     try {
@@ -26,6 +39,9 @@ function getHomeMovies() {
         animationApi,
         actionApi,
       ]);
+
+      const firstMovie = popularMovies.data.results[0];
+      preloadBannerImage(firstMovie?.backdrop_path || firstMovie?.poster_path);
 
       dispatch(
         movieActions.getHomePageAllMovies({

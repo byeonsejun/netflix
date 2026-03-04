@@ -23,7 +23,7 @@ const opts = {
   },
 };
 
-const CARD_SIZE = window.innerWidth <= 600 ? 'w200' : 'w300';
+const CARD_SIZE = window.innerWidth <= 600 ? 'w154' : 'w300';
 
 const MovieCard = ({ item, genreList, page }) => {
   const dispatch = useDispatch();
