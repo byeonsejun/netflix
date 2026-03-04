@@ -1,31 +1,29 @@
 import React from 'react';
 import { MdInfoOutline } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import { getTmdbImageUrl, getTmdbBannerDesktopSrcSet, TMDB_SIZE } from '../util/tmdbImage';
+import { getTmdbImageUrl } from '../util/tmdbImage';
+
+const IS_MOBILE = window.innerWidth <= 600;
+const BANNER_SIZE = IS_MOBILE ? 'w300' : 'w780';
 
 const Banner = ({ movie }) => {
   const navigate = useNavigate();
   const goToDetailMovie = () => navigate(`/movies/${movie.id}`);
   const path = movie?.backdrop_path || movie?.poster_path;
-  const bannerFallback = getTmdbImageUrl(path, TMDB_SIZE.CARD_MOBILE);
-  const desktopSrcSet = path ? getTmdbBannerDesktopSrcSet(path) : '';
-  const mobileSrc = getTmdbImageUrl(path, TMDB_SIZE.CARD_MOBILE);
+  const bannerUrl = getTmdbImageUrl(path, BANNER_SIZE);
 
   return (
     <div className="banner">
       {path && (
-        <picture className="banner-picture">
-          <source media="(max-width: 600px)" srcSet={mobileSrc} />
-          <source media="(min-width: 601px)" srcSet={desktopSrcSet} sizes="100vw" />
+        <div className="banner-picture">
           <img
-            src={bannerFallback}
+            src={bannerUrl}
             alt=""
             className="banner-img"
-            fetchpriority="high"
+            fetchPriority="high"
             loading="eager"
-            decoding="sync"
           />
-        </picture>
+        </div>
       )}
       <div className="banner-info">
         <h1>{movie.title}</h1>

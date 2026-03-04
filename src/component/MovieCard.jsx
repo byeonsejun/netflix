@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
-import { getTmdbImageUrl, getTmdbCardSrcSet, TMDB_SIZE } from '../util/tmdbImage';
+import { getTmdbImageUrl } from '../util/tmdbImage';
 import adultSvg from './../images/adult.svg';
 import kidsSvg from './../images/kids.svg';
 import bestImg from './../images/best.png';
@@ -22,6 +22,8 @@ const opts = {
     autoplay: 1,
   },
 };
+
+const CARD_SIZE = window.innerWidth <= 600 ? 'w200' : 'w300';
 
 const MovieCard = ({ item, genreList, page }) => {
   const dispatch = useDispatch();
@@ -54,7 +56,6 @@ const MovieCard = ({ item, genreList, page }) => {
   }, [hovered]);
 
   const path = item.poster_path;
-  const cardSrcSet = path ? getTmdbCardSrcSet(path) : '';
 
   return (
     <>
@@ -65,9 +66,7 @@ const MovieCard = ({ item, genreList, page }) => {
         className={`card ${page && page}`}
       >
         <img
-          src={getTmdbImageUrl(path, TMDB_SIZE.CARD_MOBILE)}
-          srcSet={cardSrcSet}
-          sizes="(max-width: 600px) 45vw, 300px"
+          src={getTmdbImageUrl(path, CARD_SIZE)}
           alt=""
           className="card-img"
           loading="lazy"

@@ -20,7 +20,11 @@ const LazySection = ({ children, rootMargin = '200px' }) => {
     return () => observer.disconnect();
   }, [rootMargin]);
 
-  return <div ref={ref}>{visible ? children : null}</div>;
+  return (
+    <div ref={ref} style={visible ? undefined : { minHeight: '250px' }}>
+      {visible ? children : null}
+    </div>
+  );
 };
 
 export default LazySection;
