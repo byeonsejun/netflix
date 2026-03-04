@@ -44,11 +44,13 @@ const MovieCard = ({ item, genreList, page }) => {
   useEffect(() => {
     if (uid !== globalModalId || detailVideo.results.length === 0) return;
     setOpenModal(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detailVideo]);
 
   useEffect(() => {
     const timer = hovered && setTimeout(showVideoModal, 3000);
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hovered]);
 
   return (
