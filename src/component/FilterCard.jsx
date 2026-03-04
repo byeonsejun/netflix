@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImdb, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
+import { getTmdbImageUrl, TMDB_SIZE } from '../util/tmdbImage';
 import adultSvg from './../images/adult.svg';
 import kidsSvg from './../images/kids.svg';
 import bestImg from './../images/best.png';
@@ -15,8 +16,11 @@ const FilterCard = ({ item, genreList }) => {
         <div className="movie_header">
           <img
             className="locandina"
-            src={`https://image.tmdb.org/t/p/original/${item.poster_path}`}
+            src={getTmdbImageUrl(item.poster_path, TMDB_SIZE.POSTER)}
             alt={`posterImg`}
+            width={54}
+            height={80}
+            loading="lazy"
           />
           <h1>{item.title}</h1>
           {item.release_date && <h4>{item.release_date.substring(0, 4)}</h4>}
@@ -39,7 +43,7 @@ const FilterCard = ({ item, genreList }) => {
           <ul>
             <li>
               <span className="imb-score">
-                <img className="best_img" src={bestImg} alt="best icon" />
+                <img className="best_img" src={bestImg} alt="best icon" width={20} height={20} />
                 {item.vote_average && item.vote_average.toFixed(1)}
               </span>
             </li>
@@ -52,9 +56,9 @@ const FilterCard = ({ item, genreList }) => {
             <li>
               <span className="eightteen">
                 {item.adult ? (
-                  <img className="adult_img" src={adultSvg} alt="adult img" />
+                  <img className="adult_img" src={adultSvg} alt="adult img" width={16} height={16} />
                 ) : (
-                  <img className="kids_img" src={kidsSvg} alt="kids img" />
+                  <img className="kids_img" src={kidsSvg} alt="kids img" width={16} height={16} />
                 )}
               </span>
             </li>
@@ -64,7 +68,7 @@ const FilterCard = ({ item, genreList }) => {
       <div
         className="blur_back bright_back"
         style={{
-          backgroundImage: `url(https://image.tmdb.org/t/p/original/${item.backdrop_path})`,
+          backgroundImage: `url(${getTmdbImageUrl(item.backdrop_path, TMDB_SIZE.BACKDROP)})`,
         }}
       ></div>
     </div>
