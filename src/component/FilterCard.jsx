@@ -65,12 +65,15 @@ const FilterCard = ({ item, genreList }) => {
           </ul>
         </div>
       </div>
-      <div
-        className="blur_back bright_back"
-        style={{
-          backgroundImage: `url(${getTmdbImageUrl(item.backdrop_path, TMDB_SIZE.BACKDROP)})`,
-        }}
-      ></div>
+      <div className="blur_back bright_back">
+        <img
+          src={getTmdbImageUrl(item.backdrop_path, TMDB_SIZE.BACKDROP)}
+          alt=""
+          className="blur_back_img"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
     </div>
   );
 };

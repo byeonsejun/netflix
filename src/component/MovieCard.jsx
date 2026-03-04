@@ -53,6 +53,8 @@ const MovieCard = ({ item, genreList, page }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hovered]);
 
+  const cardImageUrl = getTmdbImageUrl(item.poster_path, TMDB_SIZE.CARD);
+
   return (
     <>
       <div
@@ -60,10 +62,14 @@ const MovieCard = ({ item, genreList, page }) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         className={`card ${page && page}`}
-        style={{
-          backgroundImage: `url(${getTmdbImageUrl(item.poster_path, TMDB_SIZE.CARD)})`,
-        }}
       >
+        <img
+          src={cardImageUrl}
+          alt=""
+          className="card-img"
+          loading="lazy"
+          decoding="async"
+        />
         <div className="overlay">
           <h2>{item.title}</h2>
           <div className="overlay_genre">
