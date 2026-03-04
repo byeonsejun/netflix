@@ -2,8 +2,8 @@
  * TMDB 이미지 URL 생성 – original 대신 적정 해상도 사용으로 페이로드 최적화
  * @see https://developer.themoviedb.org/docs/image-urls
  *
- * WebP/AVIF: TMDB는 기본적으로 JPG만 제공합니다. WebP/AVIF로 변환하려면
- * 이미지 프록시(Vercel Image Optimization, Cloudflare Images 등)를 사용하고
+ * WebP/AVIF: TMDB는 URL 파라미터로 포맷 지정 불가(서버가 일부 WebP 자동 반환).
+ * 포맷 변환을 쓰려면 이미지 프록시(Vercel Image Optimization, Cloudflare Images 등)를 사용하고
  * .env에 REACT_APP_IMAGE_PROXY=https://your-domain/api/image 처럼 설정하면
  * getTmdbImageUrl이 해당 프록시를 통해 URL을 감싸 반환합니다.
  */
@@ -29,8 +29,12 @@ export const TMDB_SIZE = {
   POSTER: 'w500',
   /** 작은 썸네일(벨 팝업 등): w185 */
   THUMB: 'w185',
-  /** 관련 영화 카드: w500 */
+  /** 관련 영화 카드: w500 (데스크톱) */
   CARD: 'w500',
+  /** 슬라이더 카드 모바일: w300 (80~110KB 절감) */
+  CARD_MOBILE: 'w300',
+  /** 슬라이더 카드 초소형 모바일: w200 */
+  CARD_MOBILE_SM: 'w200',
 };
 
 /**
@@ -61,6 +65,19 @@ export function getTmdbPosterSrcSet(path) {
     [`${BASE}/w300${p}`, 300],
     [`${BASE}/w500${p}`, 500],
     [`${BASE}/w780${p}`, 780],
+  ]);
+}
+
+/**
+ * 슬라이더/카드용 srcSet – 모바일(w200, w300) + 데스크톱(w500). 모바일 페이로드 절감.
+ */
+export function getTmdbCardSrcSet(path) {
+  if (!path) return '';
+  const p = path.startsWith('/') ? path : `/${path}`;
+  return buildSrcSet([
+    [`${BASE}/w200${p}`, 200],
+    [`${BASE}/w300${p}`, 300],
+    [`${BASE}/w500${p}`, 500],
   ]);
 }
 

@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
-import { getTmdbImageUrl, TMDB_SIZE } from '../util/tmdbImage';
+import { getTmdbImageUrl, getTmdbCardSrcSet, TMDB_SIZE } from '../util/tmdbImage';
 import adultSvg from './../images/adult.svg';
 import kidsSvg from './../images/kids.svg';
 import bestImg from './../images/best.png';
@@ -23,7 +23,9 @@ const opts = {
   },
 };
 
-const MovieCard = ({ item, genreList, page }) => {
+const EAGER_SLIDE_COUNT = 3;
+
+const MovieCard = ({ item, genreList, page, slideIndex = 0, useSwiperLazy = false }) => {
   const dispatch = useDispatch();
   const { detailVideo, globalModalId } = useSelector((state) => state.movie);
   const navigate = useNavigate();
@@ -53,7 +55,11 @@ const MovieCard = ({ item, genreList, page }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hovered]);
 
-  const cardImageUrl = getTmdbImageUrl(item.poster_path, TMDB_SIZE.CARD);
+  const path = item.poster_path;
+  const cardImageUrl = getTmdbImageUrl(path, TMDB_SIZE.CARD_MOBILE);
+  const cardSrcSet = path ? getTmdbCardSrcSet(path) : '';
+  const isEager = !useSwiperLazy || slideIndex < EAGER_SLIDE_COUNT;
+  const useDataSrc = useSwiperLazy && slideIndex >= EAGER_SLIDE_COUNT;
 
   return (
     <>
@@ -63,13 +69,25 @@ const MovieCard = ({ item, genreList, page }) => {
         onMouseLeave={handleMouseLeave}
         className={`card ${page && page}`}
       >
-        <img
-          src={cardImageUrl}
-          alt=""
-          className="card-img"
-          loading="lazy"
-          decoding="async"
-        />
+        {useDataSrc ? (
+          <img
+            data-src={getTmdbImageUrl(path, TMDB_SIZE.CARD_MOBILE)}
+            alt=""
+            className="card-img swiper-lazy"
+            decoding="async"
+          />
+        ) : (
+          <img
+            src={cardImageUrl}
+            srcSet={cardSrcSet}
+            sizes="(max-width: 600px) 45vw, 300px"
+            alt=""
+            className="card-img"
+            loading={isEager ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        )}
+        {useDataSrc && <div className="swiper-lazy-preloader" />}
         <div className="overlay">
           <h2>{item.title}</h2>
           <div className="overlay_genre">
