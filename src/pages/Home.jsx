@@ -3,6 +3,7 @@ import { movieAction } from './../redux/actions/MovieAction';
 import { useDispatch, useSelector } from 'react-redux';
 import Banner from '../component/Banner';
 import MovieSlide from '../component/MovieSlide';
+import LazySection from '../component/LazySection';
 import PuffLoader from 'react-spinners/PuffLoader';
 
 const Home = () => {
@@ -26,19 +27,23 @@ const Home = () => {
 
   return (
     <div id="home">
-      <>
-        <Banner movie={popularMovies.results[0]} />
-        <section className="main_slider">
-          <h1>Popular on Netflix</h1>
-          <MovieSlide movies={popularMovies} page={'main'} />
+      <Banner movie={popularMovies.results[0]} />
+      <section className="main_slider">
+        <h1>Popular on Netflix</h1>
+        <MovieSlide movies={popularMovies} page={'main'} />
+        <LazySection>
           <h1>Coming This Week</h1>
           <MovieSlide movies={upComingMovies} page={'main'} />
+        </LazySection>
+        <LazySection>
           <h1>Animation</h1>
           <MovieSlide movies={animationList} page={'main'} />
+        </LazySection>
+        <LazySection>
           <h1>Action</h1>
           <MovieSlide movies={actionList} page={'main'} />
-        </section>
-      </>
+        </LazySection>
+      </section>
     </div>
   );
 };

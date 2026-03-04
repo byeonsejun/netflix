@@ -23,9 +23,7 @@ const opts = {
   },
 };
 
-const EAGER_SLIDE_COUNT = 3;
-
-const MovieCard = ({ item, genreList, page, slideIndex = 0, useSwiperLazy = false }) => {
+const MovieCard = ({ item, genreList, page }) => {
   const dispatch = useDispatch();
   const { detailVideo, globalModalId } = useSelector((state) => state.movie);
   const navigate = useNavigate();
@@ -56,10 +54,7 @@ const MovieCard = ({ item, genreList, page, slideIndex = 0, useSwiperLazy = fals
   }, [hovered]);
 
   const path = item.poster_path;
-  const cardImageUrl = getTmdbImageUrl(path, TMDB_SIZE.CARD_MOBILE);
   const cardSrcSet = path ? getTmdbCardSrcSet(path) : '';
-  const isEager = !useSwiperLazy || slideIndex < EAGER_SLIDE_COUNT;
-  const useDataSrc = useSwiperLazy && slideIndex >= EAGER_SLIDE_COUNT;
 
   return (
     <>
@@ -69,25 +64,15 @@ const MovieCard = ({ item, genreList, page, slideIndex = 0, useSwiperLazy = fals
         onMouseLeave={handleMouseLeave}
         className={`card ${page && page}`}
       >
-        {useDataSrc ? (
-          <img
-            data-src={getTmdbImageUrl(path, TMDB_SIZE.CARD_MOBILE)}
-            alt=""
-            className="card-img swiper-lazy"
-            decoding="async"
-          />
-        ) : (
-          <img
-            src={cardImageUrl}
-            srcSet={cardSrcSet}
-            sizes="(max-width: 600px) 45vw, 300px"
-            alt=""
-            className="card-img"
-            loading={isEager ? 'eager' : 'lazy'}
-            decoding="async"
-          />
-        )}
-        {useDataSrc && <div className="swiper-lazy-preloader" />}
+        <img
+          src={getTmdbImageUrl(path, TMDB_SIZE.CARD_MOBILE)}
+          srcSet={cardSrcSet}
+          sizes="(max-width: 600px) 45vw, 300px"
+          alt=""
+          className="card-img"
+          loading="lazy"
+          decoding="async"
+        />
         <div className="overlay">
           <h2>{item.title}</h2>
           <div className="overlay_genre">

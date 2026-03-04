@@ -2,20 +2,17 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import MovieCard from './MovieCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation, Lazy } from 'swiper';
+import { Pagination, Navigation } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import 'swiper/css/lazy';
 
 const MovieSlide = ({ movies, page }) => {
   const { genreList } = useSelector((state) => state.movie);
-  const isMain = Boolean(page);
-  const modules = isMain ? [Pagination, Navigation, Lazy] : [Pagination, Navigation];
   return (
     <div>
       <Swiper
-        modules={modules}
+        modules={[Pagination, Navigation]}
         pagination={{ clickable: true }}
         navigation={true}
         className="mySwiper"
@@ -23,8 +20,8 @@ const MovieSlide = ({ movies, page }) => {
         slidesPerView={1}
         slidesPerGroup={1}
         speed={1000}
-        lazy={isMain ? { loadPrevNext: true, loadPrevNextAmount: 1 } : false}
-        preloadImages={!isMain}
+        preloadImages={false}
+        watchSlidesProgress={true}
         breakpoints={{
           320: { slidesPerView: 1, centeredSlides: true, slidesPerGroup: 1 },
           420: { slidesPerView: 1.25, centeredSlides: false, slidesPerGroup: 1 },
@@ -47,13 +44,7 @@ const MovieSlide = ({ movies, page }) => {
         {movies.results.map((item, idx) => {
           return (
             <SwiperSlide key={idx}>
-              <MovieCard
-                item={item}
-                genreList={genreList}
-                page={page && page}
-                slideIndex={idx}
-                useSwiperLazy={isMain}
-              />
+              <MovieCard item={item} genreList={genreList} page={page && page} />
             </SwiperSlide>
           );
         })}
