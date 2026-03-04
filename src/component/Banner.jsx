@@ -20,6 +20,8 @@ const Banner = ({ movie }) => {
             src={bannerUrl}
             alt=""
             className="banner-img"
+            width={1280}
+            height={720}
             fetchPriority="high"
             loading="eager"
           />
