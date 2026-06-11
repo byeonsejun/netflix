@@ -6,7 +6,6 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getTmdbImageUrl, TMDB_SIZE } from '../util/tmdbImage';
-import mianLogo from './../images/logo.png';
 
 import { FaBell } from 'react-icons/fa';
 import { movieAction } from '../redux/actions/MovieAction';
@@ -20,6 +19,7 @@ const headerUi = [
   { text: 'Bell', icon: <FaBell />, point: true, id: 'bell_ui' },
   // { text: 'User', icon: <FaUserAlt />, active: false, id: 'user_ui' },
 ];
+const logoLetters = ['S', 'E', 'F', 'L', 'I', 'X'];
 
 const Navigation = () => {
   const dispatch = useDispatch();
@@ -61,7 +61,13 @@ const Navigation = () => {
       <Navbar variant="dark" expand="lg">
         <Container fluid>
           <Navbar.Brand href="" className="mainLogo">
-            <img onClick={() => navigate('/')} src={mianLogo} alt="logoimg" width={100} height={56} decoding="async" />
+            <button className="brandLogo" onClick={() => navigate('/')} aria-label="SEFLIX 홈으로 이동">
+              {logoLetters.map((letter, idx) => (
+                <span key={`${letter}-${idx}`} className="brandLogoLetter">
+                  {letter}
+                </span>
+              ))}
+            </button>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll" className="nav_wrap">

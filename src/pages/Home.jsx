@@ -35,7 +35,7 @@ const Home = () => {
       )}
       {hasData && (
         <section className="main_slider">
-          <h1>Popular on Netflix</h1>
+          <h1>Popular on SEFLIX</h1>
           <MovieSlide movies={popularMovies} page={'main'} />
           <LazySection>
             <h1>Coming This Week</h1>

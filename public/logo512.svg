@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="SEFLIX 512 icon">
+  <rect width="512" height="512" rx="64" fill="#000000" />
+  <g fill="#e50914" font-family="Bebas Neue, Arial Narrow, Arial, sans-serif" font-size="194" font-weight="700" text-anchor="middle" dominant-baseline="middle">
+    <text x="76" y="298" transform="rotate(-5.5 76 298)">S</text>
+    <text x="150" y="286" transform="rotate(-3.3 150 286)">E</text>
+    <text x="223" y="278" transform="rotate(-1.6 223 278)">F</text>
+    <text x="296" y="278" transform="rotate(1.6 296 278)">L</text>
+    <text x="362" y="286" transform="rotate(3.3 362 286)">I</text>
+    <text x="435" y="298" transform="rotate(5.5 435 298)">X</text>
+  </g>
+</svg>
