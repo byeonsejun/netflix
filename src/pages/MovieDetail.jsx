@@ -65,10 +65,6 @@ const MovieDetail = () => {
     initLocalStorage('like', id) ? setLike(true) : setLike(false);
   }, [dispatch, id]);
 
-  useEffect(() => {
-    console.log(detailMovie);
-  }, [detailMovie]);
-
   if (loading) {
     return (
       <PuffLoader
