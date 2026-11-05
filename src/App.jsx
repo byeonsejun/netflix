@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import './App.css';
 import './index.css';
 import Navigation from './component/Navigation';
+import Footer from './component/Footer';
 import { Outlet } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/store';
@@ -17,6 +18,7 @@ function App() {
       <Provider store={store}>
         <Navigation />
         <Outlet />
+        <Footer />
       </Provider>
       <div id="portal" />
     </>
